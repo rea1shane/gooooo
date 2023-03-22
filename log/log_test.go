@@ -2,6 +2,7 @@ package log
 
 import (
 	log "github.com/sirupsen/logrus"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"testing"
 )
 
@@ -31,4 +32,13 @@ func TestGetLogger(t *testing.T) {
 		WithField("key1", "value1").
 		WithField("key2", "value2").
 		Error("error")
+}
+
+func TestRotate(t *testing.T) {
+	logger := GetLogger()
+	logger.Info("测试")
+	Rotate(logger, &lumberjack.Logger{
+		Filename: "logs/test.log",
+	})
+	logger.Info("test")
 }

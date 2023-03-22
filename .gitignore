@@ -17,5 +17,9 @@
 .idea
 .DS_Store
 
-## execuable file
+# execuable file
 bin
+
+# log
+*.log
+logs
