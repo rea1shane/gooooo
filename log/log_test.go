@@ -22,6 +22,11 @@ func TestGetLogger(t *testing.T) {
 	loggerWithFields.Info("info")
 	loggerWithFields.Warn("warn")
 
+	// 更改 Formatter
+	formatter := GetFormatter()
+	formatter.HideKeys = false
+	logger.SetFormatter(formatter)
+
 	logger.
 		WithField("key1", "value1").
 		WithField("key2", "value2").
