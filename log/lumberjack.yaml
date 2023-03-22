@@ -1,0 +1,6 @@
+filename: logs/lumberjack.log
+# maxsize:
+# maxage:
+# maxbackups:
+# localtime:
+# compress:

@@ -42,3 +42,13 @@ func TestRotate(t *testing.T) {
 	})
 	logger.Info("test")
 }
+
+func TestLoadRotateConfigFromYaml(t *testing.T) {
+	output, err := LoadRotateConfigFromYaml("lumberjack.yaml")
+	if err != nil {
+		panic(err)
+	}
+	logger := GetLogger()
+	logger.SetOutput(output)
+	logger.Info("test")
+}
