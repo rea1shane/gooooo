@@ -18,7 +18,6 @@ func TestCron(t *testing.T) {
 func TestCronWithSeconds(t *testing.T) {
 	c := cron.New(cron.WithSeconds())
 	c.AddFunc("* * * * * *", func() { fmt.Println("Print per second") })
-
 	c.Start()
 	time.Sleep(100 * time.Second)
 	c.Stop()

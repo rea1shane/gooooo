@@ -15,7 +15,7 @@ func TestCronLogger(t *testing.T) {
 	logger.SetFormatter(formatter)
 	cronLogger := GenerateCronLogger(logger, []string{
 		"now",
-		//"next",
+		"next",
 	})
 	c := cron.New(
 		cron.WithSeconds(),

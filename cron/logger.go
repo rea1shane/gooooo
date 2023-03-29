@@ -1,9 +1,9 @@
 package cron
 
 import (
-	"fmt"
 	"github.com/robfig/cron/v3"
 	log "github.com/sirupsen/logrus"
+	"time"
 )
 
 // GenerateCronLogger 从 logrus Logger 生成 cron Logger
@@ -41,18 +41,23 @@ func (cl *CronLogger) generateLoggerFields(kvs ...interface{}) log.Fields {
 	fields := make(log.Fields)
 	fields["module"] = "cron"
 	for i := 0; i < len(kvs); i += 2 {
-		key := fmt.Sprintf("%v", kvs[i])
+		key := kvs[i].(string)
+		value := kvs[i+1]
 		if cl.hide(key) {
 			continue
 		}
-		if key == "entry" {
-			entryID := kvs[i+1].(cron.EntryID)
+		switch key {
+		default:
+			fields[key] = value
+		case "entry":
+			entryID := value.(cron.EntryID)
 			if entryName, ok := cl.entries[entryID]; ok {
 				fields[key] = entryName
-				continue
 			}
+		case "now", "next":
+			t := value.(time.Time)
+			fields[key] = t.Format("2006-01-02 15:04:05")
 		}
-		fields[key] = kvs[i+1]
 	}
 	return fields
 }
