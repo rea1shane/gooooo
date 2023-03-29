@@ -1,4 +1,4 @@
-filename: logs/lumberjack.log
+filename: logs/rotation.log
 # maxsize:
 # maxage:
 # maxbackups:

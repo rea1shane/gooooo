@@ -15,7 +15,7 @@ func TestRotate(t *testing.T) {
 }
 
 func TestLoadRotationConfigFromYaml(t *testing.T) {
-	output, err := LoadRotationConfigFromYaml("lumberjack.yaml")
+	output, err := LoadRotationConfigFromYaml("rotation.yaml")
 	if err != nil {
 		panic(err)
 	}
