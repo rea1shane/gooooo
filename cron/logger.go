@@ -18,7 +18,12 @@ func GenerateCronLogger(logger *log.Logger, hiddenFields []string) *CronLogger {
 type CronLogger struct {
 	logger       *log.Logger
 	entries      map[cron.EntryID]string // entries 记录每个 entryID 对应的名称
-	hiddenFields []string                // hiddenFields 隐藏 cron 返回的信息，cron 默认会返回 entry / now（当前时间） / next（下次调度时间），如果不想隐藏任何信息就传入空
+	hiddenFields []string                // hiddenFields cron 会返回 entry、now（当前时间、next（下次调度时间）等 kv，数组中的 key 对应的 field 将被隐藏，如果不想隐藏任何信息就传入空
+}
+
+// RegisterEntry 记录任务对应的名称
+func (cl *CronLogger) RegisterEntry(entryID cron.EntryID, entryName string) {
+	cl.entries[entryID] = entryName
 }
 
 func (cl *CronLogger) Info(msg string, keysAndValues ...interface{}) {
@@ -31,15 +36,10 @@ func (cl *CronLogger) Error(err error, msg string, keysAndValues ...interface{})
 	entry.Error(msg, "err: ", err)
 }
 
-// RecordEntry 记录任务对应的名称
-func (cl *CronLogger) RecordEntry(entryID cron.EntryID, entryName string) {
-	cl.entries[entryID] = entryName
-}
-
 // generateLoggerFields 将 keysAndValues 转换为 logrus 的 Fields
 func (cl *CronLogger) generateLoggerFields(kvs ...interface{}) log.Fields {
 	fields := make(log.Fields)
-	fields["1-module"] = "cron" // 前面的 "1-" 是为了把这个 field 的排序顶到前面
+	fields["module"] = "cron"
 	for i := 0; i < len(kvs); i += 2 {
 		key := fmt.Sprintf("%v", kvs[i])
 		if cl.hide(key) {
