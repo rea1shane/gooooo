@@ -16,3 +16,5 @@ func LoadRotationConfigFromYaml(path string) (output *lumberjack.Logger, err err
 	err = yaml.Load(path, &output)
 	return
 }
+
+// TODO 定时滚动 https://github.com/natefinch/lumberjack/issues/111

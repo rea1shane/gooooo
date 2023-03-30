@@ -1,6 +1,6 @@
 module github.com/rea1shane/gooooo
 
-go 1.17
+go 1.18
 
 require (
 	github.com/antonfisher/nested-logrus-formatter v1.3.1

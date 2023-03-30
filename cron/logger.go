@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// GenerateCronLogger 从 logrus Logger 生成 cron Logger
+// GenerateCronLogger 通过 logrus Logger 生成 cron Logger
 func GenerateCronLogger(logger *log.Logger, hiddenFields []string) *CronLogger {
 	return &CronLogger{
 		logger:       logger,
@@ -26,18 +26,18 @@ func (cl *CronLogger) RegisterEntry(entryID cron.EntryID, entryName string) {
 	cl.entries[entryID] = entryName
 }
 
-func (cl *CronLogger) Info(msg string, keysAndValues ...interface{}) {
+func (cl *CronLogger) Info(msg string, keysAndValues ...any) {
 	entry := cl.logger.WithFields(cl.generateLoggerFields(keysAndValues...))
 	entry.Info(msg)
 }
 
-func (cl *CronLogger) Error(err error, msg string, keysAndValues ...interface{}) {
+func (cl *CronLogger) Error(err error, msg string, keysAndValues ...any) {
 	entry := cl.logger.WithFields(cl.generateLoggerFields(keysAndValues...))
 	entry.Error(msg, "err: ", err)
 }
 
 // generateLoggerFields 将 keysAndValues 转换为 logrus 的 Fields
-func (cl *CronLogger) generateLoggerFields(kvs ...interface{}) log.Fields {
+func (cl *CronLogger) generateLoggerFields(kvs ...any) log.Fields {
 	fields := make(log.Fields)
 	fields["module"] = "cron"
 	for i := 0; i < len(kvs); i += 2 {
