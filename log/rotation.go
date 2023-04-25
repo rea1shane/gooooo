@@ -2,12 +2,12 @@ package log
 
 import (
 	"github.com/rea1shane/gooooo/yaml"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-// Rotate 设置 logger 滚动输出日志文件
-func Rotate(logger *log.Logger, output *lumberjack.Logger) {
+// Rotate 设置 logrus.Logger 滚动输出日志文件
+func Rotate(logger *logrus.Logger, output *lumberjack.Logger) {
 	logger.SetOutput(output)
 }
 

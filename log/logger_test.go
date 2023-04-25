@@ -13,7 +13,6 @@ func TestGetLogger(t *testing.T) {
 	logger.Trace("trace")
 	logger.Debug("debug")
 
-	// 携带 field list
 	fields := make(logrus.Fields)
 	fields["k1"] = "v1"
 	fields["k2"] = "v2"
@@ -22,7 +21,6 @@ func TestGetLogger(t *testing.T) {
 	loggerWithFields.Info("info")
 	loggerWithFields.Warn("warn")
 
-	// 更改 Formatter
 	formatter := GetFormatter()
 	formatter.HideKeys = false
 	logger.SetFormatter(formatter)
