@@ -66,8 +66,8 @@ func HandlerLogger(logger logrus.FieldLogger, latencyThreshold time.Duration, no
 	}
 }
 
-// Log 输出日志
-// 当处理请求时长 latency 超过 latencyThreshold，日志记录将由 info 转为 warning。latencyThreshold <= 0 时禁用此功能。
+// Log 输出日志，包含两个 logrus.Fields：StatusCode 与 Latency
+// 当处理请求时长 latency 超过 latencyThreshold，日志记录将由 info 转为 warning。latencyThreshold <= 0 时禁用此功能
 func Log(logger logrus.FieldLogger, param gin.LogFormatterParams, latencyThreshold time.Duration) {
 	if param.Latency > time.Minute {
 		param.Latency = param.Latency.Truncate(time.Second)
