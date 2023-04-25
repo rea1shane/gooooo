@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/rea1shane/gooooo/log"
 	"github.com/sirupsen/logrus"
@@ -24,7 +25,8 @@ func TestGinDefault(t *testing.T) {
 func run(handler *gin.Engine) {
 	handler.GET("/ping", func(c *gin.Context) {
 		c.Writer.WriteString("pong")
-		//c.Error(errors.New("测试错误"))
+		e := c.Error(errors.New("测试错误"))
+		e.Meta = "测试元数据"
 	})
 	handler.GET("/skip", func(c *gin.Context) {
 		c.Writer.WriteString("skip")
