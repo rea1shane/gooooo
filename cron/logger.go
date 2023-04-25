@@ -2,12 +2,12 @@ package cron
 
 import (
 	"github.com/robfig/cron/v3"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"time"
 )
 
-// GenerateCronLogger 通过 logrus Logger 生成 cron Logger
-func GenerateCronLogger(logger *log.Logger, hiddenFields []string) *CronLogger {
+// GenerateCronLogger 通过 logrus.Logger 生成 cron.CronLogger
+func GenerateCronLogger(logger *logrus.Logger, hiddenFields []string) *CronLogger {
 	return &CronLogger{
 		logger:       logger,
 		entries:      make(map[cron.EntryID]string),
@@ -16,9 +16,9 @@ func GenerateCronLogger(logger *log.Logger, hiddenFields []string) *CronLogger {
 }
 
 type CronLogger struct {
-	logger       *log.Logger
+	logger       *logrus.Logger
 	entries      map[cron.EntryID]string // entries 记录每个 entryID 对应的名称
-	hiddenFields []string                // hiddenFields cron 会返回 entry、now（当前时间、next（下次调度时间）等 kv，数组中的 key 对应的 field 将被隐藏，如果不想隐藏任何信息就传入空
+	hiddenFields []string                // hiddenFields cron 会返回 entry、now（当前时间）、next（下次调度时间）等 kv，数组中的 key 对应的 field 将被隐藏，如果不想隐藏任何信息就传入空
 }
 
 // RegisterEntry 记录任务对应的名称
@@ -36,9 +36,9 @@ func (cl *CronLogger) Error(err error, msg string, keysAndValues ...any) {
 	entry.Error(msg, "err: ", err)
 }
 
-// generateLoggerFields 将 keysAndValues 转换为 logrus 的 Fields
-func (cl *CronLogger) generateLoggerFields(kvs ...any) log.Fields {
-	fields := make(log.Fields)
+// generateLoggerFields 将 keysAndValues 转换为 logrus.Fields
+func (cl *CronLogger) generateLoggerFields(kvs ...any) logrus.Fields {
+	fields := make(logrus.Fields)
 	fields["module"] = "cron"
 	for i := 0; i < len(kvs); i += 2 {
 		key := kvs[i].(string)
@@ -62,7 +62,7 @@ func (cl *CronLogger) generateLoggerFields(kvs ...any) log.Fields {
 	return fields
 }
 
-// hide 如果命中了 hiddenFields 中的元素，则不添加到 Fields 中
+// hide 检测元素是否在 hiddenFields 中
 func (cl *CronLogger) hide(key string) bool {
 	for _, hiddenField := range cl.hiddenFields {
 		if key == hiddenField {

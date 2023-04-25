@@ -6,7 +6,7 @@ import (
 )
 
 func TestRotate(t *testing.T) {
-	logger := GetLogger()
+	logger := NewLogger()
 	logger.Info("测试")
 	Rotate(logger, &lumberjack.Logger{
 		Filename: "logs/test.log",
@@ -19,7 +19,7 @@ func TestLoadRotationConfigFromYaml(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	logger := GetLogger()
+	logger := NewLogger()
 	logger.SetOutput(output)
 	logger.Info("test")
 }

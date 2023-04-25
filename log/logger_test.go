@@ -1,20 +1,20 @@
 package log
 
 import (
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"testing"
 )
 
 func TestGetLogger(t *testing.T) {
-	logger := GetLogger()
+	logger := NewLogger()
 
-	logger.SetLevel(log.TraceLevel)
+	logger.SetLevel(logrus.TraceLevel)
 
 	logger.Trace("trace")
 	logger.Debug("debug")
 
 	// 携带 field list
-	fields := make(log.Fields)
+	fields := make(logrus.Fields)
 	fields["k1"] = "v1"
 	fields["k2"] = "v2"
 	loggerWithFields := logger.WithFields(fields)

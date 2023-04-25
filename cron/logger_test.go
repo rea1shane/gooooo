@@ -11,7 +11,7 @@ import (
 func TestCronLogger(t *testing.T) {
 	formatter := log.GetFormatter()
 	formatter.FieldsOrder = []string{"module"}
-	logger := log.GetLogger()
+	logger := log.NewLogger()
 	logger.SetFormatter(formatter)
 	cronLogger := GenerateCronLogger(logger, []string{
 		"now",
