@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// NewLogger 返回一个新建的 logrus.Logger，使用基础款 Formatter
+// NewLogger 新建一个 logrus.Logger，使用基础款 Formatter
 func NewLogger() *logrus.Logger {
 	logger := logrus.New()
 	logger.SetFormatter(GetFormatter())
