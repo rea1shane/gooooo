@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// NewHandler 新建一个使用指定 logrus.Logger 的 gin.Engine
+// NewHandler 新建一个使用指定 logrus.Logger 作为 logger 的 gin.Engine
 func NewHandler(logger logrus.FieldLogger, latencyThreshold time.Duration, notLogged ...string) *gin.Engine {
 	engine := gin.New()
 	engine.Use(HandlerLogger(logger, latencyThreshold, notLogged...), gin.Recovery())
@@ -61,14 +61,15 @@ func HandlerLogger(logger logrus.FieldLogger, latencyThreshold time.Duration, no
 
 			param.Path = path
 
-			Log(logger, param, latencyThreshold)
+			log(logger, param, latencyThreshold)
 		}
 	}
 }
 
-// Log 输出日志，包含两个 logrus.Fields：StatusCode 与 Latency
-// 当处理请求时长 latency 超过 latencyThreshold，日志记录将由 info 转为 warning。latencyThreshold <= 0 时禁用此功能
-func Log(logger logrus.FieldLogger, param gin.LogFormatterParams, latencyThreshold time.Duration) {
+// log 输出日志，包含两个 logrus.Fields："StatusCode" 和 "Latency"
+// 根据 http code 设定日志等级，大于等于 500 是 error，大于等于 400 小于 500 是 warning，其余的都是 info。
+// 当处理请求时长 latency 超过 latencyThreshold 时，info 等级的日志将转为 warning。latencyThreshold <= 0 时禁用此功能
+func log(logger logrus.FieldLogger, param gin.LogFormatterParams, latencyThreshold time.Duration) {
 	if param.Latency > time.Minute {
 		param.Latency = param.Latency.Truncate(time.Second)
 	}

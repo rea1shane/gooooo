@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-func TestCronLogger(t *testing.T) {
+func TestLogger(t *testing.T) {
 	formatter := log.GetFormatter()
 	formatter.FieldsOrder = []string{"module"}
 	logger := log.NewLogger()
 	logger.SetFormatter(formatter)
-	cronLogger := GenerateCronLogger(logger, []string{
+	cronLogger := GenerateLogger(logger, []string{
 		"now",
 		"next",
 	})
@@ -25,7 +25,7 @@ func TestCronLogger(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	cronLogger.RegisterEntry(entryID, "per-sec")
+	cronLogger.RegisterEntry(entryID, "PER SEC")
 	c.Start()
 	time.Sleep(100 * time.Second)
 	c.Stop()

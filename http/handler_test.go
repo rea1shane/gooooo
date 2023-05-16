@@ -3,7 +3,7 @@ package http
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/rea1shane/gooooo/log"
+	myLog "github.com/rea1shane/gooooo/log"
 	"github.com/sirupsen/logrus"
 	"testing"
 	"time"
@@ -11,7 +11,7 @@ import (
 
 func TestNewHandler(t *testing.T) {
 	logger := logrus.New()
-	formatter := log.GetFormatter()
+	formatter := myLog.GetFormatter()
 	formatter.FieldsOrder = []string{"StatusCode", "Latency"}
 	logger.SetFormatter(formatter)
 	handler := NewHandler(logger, 10*time.Microsecond, "/skip")

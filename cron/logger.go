@@ -6,44 +6,45 @@ import (
 	"time"
 )
 
-// GenerateCronLogger 通过 logrus.Logger 生成 cron.CronLogger
-func GenerateCronLogger(logger *logrus.Logger, hiddenFields []string) *CronLogger {
-	return &CronLogger{
+// GenerateLogger 通过 logrus.Logger 生成 Logger
+func GenerateLogger(logger *logrus.Logger, hiddenFields []string) *Logger {
+	return &Logger{
 		logger:       logger,
 		entries:      make(map[cron.EntryID]string),
 		hiddenFields: hiddenFields,
 	}
 }
 
-type CronLogger struct {
+// Logger 实现了 cron.Logger 接口
+type Logger struct {
 	logger       *logrus.Logger
 	entries      map[cron.EntryID]string // entries 记录每个 entryID 对应的名称
 	hiddenFields []string                // hiddenFields cron 会返回 entry、now（当前时间）、next（下次调度时间）等 kv，数组中的 key 对应的 field 将被隐藏，如果不想隐藏任何信息就传入空
 }
 
 // RegisterEntry 记录任务对应的名称
-func (cl *CronLogger) RegisterEntry(entryID cron.EntryID, entryName string) {
-	cl.entries[entryID] = entryName
+func (l *Logger) RegisterEntry(entryID cron.EntryID, entryName string) {
+	l.entries[entryID] = entryName
 }
 
-func (cl *CronLogger) Info(msg string, keysAndValues ...any) {
-	entry := cl.logger.WithFields(cl.generateLoggerFields(keysAndValues...))
+func (l *Logger) Info(msg string, keysAndValues ...any) {
+	entry := l.logger.WithFields(l.generateLoggerFields(keysAndValues...))
 	entry.Info(msg)
 }
 
-func (cl *CronLogger) Error(err error, msg string, keysAndValues ...any) {
-	entry := cl.logger.WithFields(cl.generateLoggerFields(keysAndValues...))
+func (l *Logger) Error(err error, msg string, keysAndValues ...any) {
+	entry := l.logger.WithFields(l.generateLoggerFields(keysAndValues...))
 	entry.Error(msg, "err: ", err)
 }
 
 // generateLoggerFields 将 keysAndValues 转换为 logrus.Fields
-func (cl *CronLogger) generateLoggerFields(kvs ...any) logrus.Fields {
+func (l *Logger) generateLoggerFields(kvs ...any) logrus.Fields {
 	fields := make(logrus.Fields)
 	fields["module"] = "cron"
 	for i := 0; i < len(kvs); i += 2 {
 		key := kvs[i].(string)
 		value := kvs[i+1]
-		if cl.hide(key) {
+		if l.hide(key) {
 			continue
 		}
 		switch key {
@@ -51,7 +52,7 @@ func (cl *CronLogger) generateLoggerFields(kvs ...any) logrus.Fields {
 			fields[key] = value
 		case "entry":
 			entryID := value.(cron.EntryID)
-			if entryName, ok := cl.entries[entryID]; ok {
+			if entryName, ok := l.entries[entryID]; ok {
 				fields[key] = entryName
 			}
 		case "now", "next":
@@ -63,8 +64,8 @@ func (cl *CronLogger) generateLoggerFields(kvs ...any) logrus.Fields {
 }
 
 // hide 检测元素是否在 hiddenFields 中
-func (cl *CronLogger) hide(key string) bool {
-	for _, hiddenField := range cl.hiddenFields {
+func (l *Logger) hide(key string) bool {
+	for _, hiddenField := range l.hiddenFields {
 		if key == hiddenField {
 			return true
 		}

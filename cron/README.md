@@ -1,5 +1,5 @@
 # Cron
 
-基于 [cron](https://github.com/robfig/cron) 开发。
+基于 [cron](https://github.com/robfig/cron) 实现。
 
-封装 [Logrus](https://github.com/sirupsen/logrus) 的 Logger 对象，实现了 cron 的 Logger 接口，用于在使用 cron 的时候输出调度日志。
+通过封装 [Logrus](https://github.com/sirupsen/logrus) 的 Logger 对象实现了 cron.Logger 接口，用于在使用 cron 的时候输出调度日志。
