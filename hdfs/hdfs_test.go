@@ -8,16 +8,16 @@ import (
 )
 
 const (
-	NameNodeAddress = "localhost:19000"
-	ConfPath        = "/etc/hadoop/conf/" // ConfPath 如果已经存在 HADOOP_CONF_DIR 或 HADOOP_HOME 环境变量，则将此值置空即可
-	Username        = "test"              // Username 进行操作的 hdfs 用户名称
+	nameNodeAddress = "localhost:19000"
+	confPath        = "/etc/hadoop/conf/" // confPath 如果已经存在 HADOOP_CONF_DIR 或 HADOOP_HOME 环境变量，则将此值置空即可
+	username        = "test"              // username 进行操作的 hdfs 用户名称
 
-	DirPath = "/"
+	dirPath = "/"
 )
 
 // TestNewClientUseSpecifiedNameNode1 使用指定的 NameNode 创建客户端
 func TestNewClientUseSpecifiedNameNode1(t *testing.T) {
-	client, err := hdfs.New(NameNodeAddress)
+	client, err := hdfs.New(nameNodeAddress)
 	if err != nil {
 		panic(err)
 	}
@@ -27,8 +27,8 @@ func TestNewClientUseSpecifiedNameNode1(t *testing.T) {
 // TestNewClientUseSpecifiedNameNode2 使用指定的 NameNode 创建客户端
 func TestNewClientUseSpecifiedNameNode2(t *testing.T) {
 	client, err := hdfs.NewClient(hdfs.ClientOptions{
-		Addresses: []string{NameNodeAddress},
-		User:      Username,
+		Addresses: []string{nameNodeAddress},
+		User:      username,
 	})
 	if err != nil {
 		panic(err)
@@ -38,14 +38,14 @@ func TestNewClientUseSpecifiedNameNode2(t *testing.T) {
 
 // TestNewClientUseConfig 使用配置文件创建客户端
 func TestNewClientUseConfig(t *testing.T) {
-	hadoopConf := hdfs.LoadHadoopConf(ConfPath)
+	hadoopConf := hdfs.LoadHadoopConf(confPath)
 	namenodes, err := hadoopConf.Namenodes()
 	if err != nil {
 		panic(err)
 	}
 	client, err := hdfs.NewClient(hdfs.ClientOptions{
 		Addresses: namenodes,
-		User:      Username,
+		User:      username,
 	})
 	if err != nil {
 		panic(err)
@@ -54,7 +54,7 @@ func TestNewClientUseConfig(t *testing.T) {
 }
 
 func readDir(client *hdfs.Client) {
-	subDirs, err := client.ReadDir(DirPath)
+	subDirs, err := client.ReadDir(dirPath)
 	switch err.(type) {
 	case *os.PathError: // 判断传入的路径是否错误
 		fmt.Println("Path Error")
