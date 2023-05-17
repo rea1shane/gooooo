@@ -8,6 +8,7 @@ require (
 	github.com/colinmarc/hdfs v1.1.3
 	github.com/gin-gonic/gin v1.9.0
 	github.com/goccy/go-json v0.10.0
+	github.com/morikuni/failure v1.1.2
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.9.0
 	github.com/xuri/excelize/v2 v2.7.1
