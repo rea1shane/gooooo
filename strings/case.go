@@ -1,17 +1,48 @@
 package strings
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 type Case string
+
+func (c Case) String() string {
+	switch c {
+	case LowerCase:
+		return "LowerCase | FlatCase"
+	case UpperCase:
+		return "UpperCase | UpperFlatCase"
+	case SnakeCase:
+		return "SnakeCase | SnailCase | PotholeCase"
+	case ScreamingSnakeCase:
+		return "ScreamingSnakeCase | MacroCase | ConstantCase"
+	case CamelCase:
+		return "CamelCase | LowerCamelCase | DromedaryCase"
+	case CamelSnakeCase:
+		return "CamelSnakeCase"
+	case PascalCase:
+		return "PascalCase | UpperCamelCase | StudlyCase"
+	case PascalSnakeCase:
+		return "PascalSnakeCase | TitleCase"
+	case KebabCase:
+		return "KebabCase | DashCase | LispCase | SpinalCase"
+	case CobolCase:
+		return "CobolCase | ScreamingKebabCase"
+	case TrainCase:
+		return "TrainCase | HttpHeaderCase"
+	}
+	return "unknown"
+}
 
 const (
 	LowerCase          Case = "^[a-z0-9]+$"                                           // LowerCase 全小写式 e.g. "twowords"
 	UpperCase          Case = "^[A-Z0-9]+$"                                           // UpperCase 全大写式 e.g. "TWOWORDS"
-	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                            // SnakeCase 蛇形（小蛇式）e.g. "two_words"
+	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                            // SnakeCase 蛇形（小蛇式） e.g. "two_words"
 	ScreamingSnakeCase Case = "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"                            // ScreamingSnakeCase 大蛇式 e.g. "TWO_WORDS"
-	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"                   // CamelCase 驼峰式（小驼峰式）e.g. "twoWords"
+	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"                   // CamelCase 驼峰式（小驼峰式） e.g. "twoWords"
 	CamelSnakeCase     Case = "^[a-z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"                  // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "two_Words"
-	PascalCase         Case = "(?=.*[a-z])^(?:[A-Z][a-z0-9]*)+$"                      // PascalCase 帕斯卡式（大驼峰式）e.g. "TwoWords"
+	PascalCase         Case = "(?=.*[a-z])^(?:[A-Z][a-z0-9]*)+$"                      // PascalCase 帕斯卡式（大驼峰式） e.g. "TwoWords"
 	PascalSnakeCase    Case = "(?=.*[a-z])^[A-Z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"       // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Two_Words"
 	KebabCase          Case = "^[a-z0-9]+(?:-[a-z0-9]+)+$"                            // KebabCase 烤串式（小烤串式） e.g. "two-words"
 	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                            // CobolCase 科博尔式（大烤串式） e.g. "TWO-WORDS"
@@ -42,11 +73,33 @@ const (
 	ScreamingKebabCase = CobolCase
 
 	HttpHeaderCase = TrainCase
+
+	Unknown Case = "^.*$" // Unknown 未知
 )
+
+var cases = []Case{
+	LowerCase,
+	UpperCase,
+	SnakeCase,
+	ScreamingSnakeCase,
+	CamelCase,
+	CamelSnakeCase,
+	PascalCase,
+	PascalSnakeCase,
+	KebabCase,
+	CobolCase,
+	TrainCase,
+}
 
 // CaseOf 获取字符串的命名风格
 func CaseOf(s string) Case {
-	// TODO
+	for _, c := range cases {
+		matched, _ := regexp.Match(string(c), []byte(s))
+		if matched {
+			return c
+		}
+	}
+	return Unknown
 }
 
 // Pascal2Snake 帕斯卡（大驼峰式）转蛇形
