@@ -5,22 +5,22 @@ import "strings"
 type Case string
 
 const (
-	LowerCase          Case = "^[a-z0-9]+$"                                       // LowerCase 全小写式 e.g. "xxyyzz"
-	FlatCase                = LowerCase                                           // FlatCase
-	UpperCase          Case = "^[A-Z0-9]+$"                                       // UpperCase 全大写式 e.g. "XXYYZZ"
-	UpperFlatCase           = UpperCase                                           // UpperFlatCase
-	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                        // SnakeCase 蛇形（小蛇式）e.g. "xx_yy_zz"
-	ScreamingSnakeCase Case = "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"                        // ScreamingSnakeCase 大蛇式 e.g. "XX_YY_ZZ"
-	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"               // CamelCase 驼峰式（小驼峰式）e.g. "xxYyZz"
-	LowerCamelCase          = CamelCase                                           // LowerCamelCase
-	CamelSnakeCase     Case = "^[a-z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"              // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "xx_Yy_Zz"
-	PascalCase         Case = "(?=.*[a-z])^(?:[A-Z][a-z0-9]*)+$"                  // PascalCase 帕斯卡式（大驼峰式）e.g. "XxYyZz"
-	UpperCamelCase          = PascalCase                                          // UpperCamelCase
-	PascalSnakeCase    Case = "(?=.*[a-z])^[A-Z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"   // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Xx_Yy_Zz"
-	KebabCase          Case = "^[a-z0-9]+(?:-[a-z0-9]+)+$"                        // KebabCase 烤串式（小烤串式） e.g. "xx-yy-zz"
-	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                        // CobolCase 科博尔式（大烤串式） e.g. "XX-YY-ZZ"
-	TrainCase          Case = "(?=.*[a-z])^[A-Z]+[a-z0-9]*(?:-[A-Z]+[a-z0-9]*)+$" // TrainCase 火车式 e.g. "XX-Yy-Zz"
-	HttpHeaderCase          = TrainCase                                           // HttpHeaderCase
+	LowerCase          Case = "^[a-z0-9]+$"                                     // LowerCase 全小写式 e.g. "xxyyzz"
+	FlatCase                = LowerCase                                         // FlatCase
+	UpperCase          Case = "^[A-Z0-9]+$"                                     // UpperCase 全大写式 e.g. "XXYYZZ"
+	UpperFlatCase           = UpperCase                                         // UpperFlatCase
+	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                      // SnakeCase 蛇形（小蛇式）e.g. "xx_yy_zz"
+	ScreamingSnakeCase Case = "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"                      // ScreamingSnakeCase 大蛇式 e.g. "XX_YY_ZZ"
+	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"             // CamelCase 驼峰式（小驼峰式）e.g. "xxYyZz"
+	LowerCamelCase          = CamelCase                                         // LowerCamelCase
+	CamelSnakeCase     Case = "^[a-z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"            // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "xx_Yy_Zz"
+	PascalCase         Case = "(?=.*[a-z])^(?:[A-Z][a-z0-9]*)+$"                // PascalCase 帕斯卡式（大驼峰式）e.g. "XxYyZz"
+	UpperCamelCase          = PascalCase                                        // UpperCamelCase
+	PascalSnakeCase    Case = "(?=.*[a-z])^[A-Z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$" // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Xx_Yy_Zz"
+	KebabCase          Case = "^[a-z0-9]+(?:-[a-z0-9]+)+$"                      // KebabCase 烤串式（小烤串式） e.g. "xx-yy-zz"
+	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                      // CobolCase 科博尔式（大烤串式） e.g. "XX-YY-ZZ"
+	TrainCase          Case = "(?=.*[a-z])^[A-Z][a-z0-9]*(?:-[A-Z][a-z0-9]*)+$" // TrainCase 列车式 e.g. "Xx-Yy-Zz"
+	HttpHeaderCase          = TrainCase                                         // HttpHeaderCase
 )
 
 // CaseOf 获取字符串的命名风格
