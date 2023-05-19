@@ -35,18 +35,21 @@ func (c Case) String() string {
 	return "unknown"
 }
 
+// mustContainLowercaseLetterPattern 因为 Go 的正则不支持 "?=" 语法，所以才出此下策，否则可以直接在正则表达式前面加 "(?=.*[a-z])" 来判断
+const mustContainLowercaseLetterPattern = "^.*[a-z].*$"
+
 const (
-	LowerCase          Case = "^[a-z0-9]+$"                                           // LowerCase 全小写式 e.g. "twowords"
-	UpperCase          Case = "^[A-Z0-9]+$"                                           // UpperCase 全大写式 e.g. "TWOWORDS"
-	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                            // SnakeCase 蛇形（小蛇式） e.g. "two_words"
-	ScreamingSnakeCase Case = "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"                            // ScreamingSnakeCase 大蛇式 e.g. "TWO_WORDS"
-	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"                   // CamelCase 驼峰式（小驼峰式） e.g. "twoWords"
-	CamelSnakeCase     Case = "^[a-z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"                  // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "two_Words"
-	PascalCase         Case = "(?=.*[a-z])^(?:[A-Z][a-z0-9]*)+$"                      // PascalCase 帕斯卡式（大驼峰式） e.g. "TwoWords"
-	PascalSnakeCase    Case = "(?=.*[a-z])^[A-Z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"       // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Two_Words"
-	KebabCase          Case = "^[a-z0-9]+(?:-[a-z0-9]+)+$"                            // KebabCase 烤串式（小烤串式） e.g. "two-words"
-	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                            // CobolCase 科博尔式（大烤串式） e.g. "TWO-WORDS"
-	TrainCase          Case = "(?=.*[a-z])^[A-Z][A-Za-z0-9]*(?:-[A-Z][A-Za-z0-9]*)+$" // TrainCase 列车式 e.g. "Two-Words"
+	LowerCase          Case = "^[a-z0-9]+$"                                // LowerCase 全小写式 e.g. "twowords"
+	UpperCase          Case = "^[A-Z0-9]+$"                                // UpperCase 全大写式 e.g. "TWOWORDS"
+	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                 // SnakeCase 蛇形（小蛇式） e.g. "two_words"
+	ScreamingSnakeCase Case = "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"                 // ScreamingSnakeCase 大蛇式 e.g. "TWO_WORDS"
+	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"        // CamelCase 驼峰式（小驼峰式） e.g. "twoWords"
+	CamelSnakeCase     Case = "^[a-z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"       // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "two_Words"
+	PascalCase         Case = "^(?:[A-Z][a-z0-9]*)+$"                      // PascalCase 帕斯卡式（大驼峰式） e.g. "TwoWords"
+	PascalSnakeCase    Case = "^[A-Z][a-z0-9]*(?:_[A-Z][a-z0-9]*)+$"       // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Two_Words"
+	KebabCase          Case = "^[a-z0-9]+(?:-[a-z0-9]+)+$"                 // KebabCase 烤串式（小烤串式） e.g. "two-words"
+	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                 // CobolCase 科博尔式（大烤串式） e.g. "TWO-WORDS"
+	TrainCase          Case = "^[A-Z][A-Za-z0-9]*(?:-[A-Z][A-Za-z0-9]*)+$" // TrainCase 列车式 e.g. "Two-Words"
 
 	FlatCase = LowerCase
 
@@ -77,26 +80,46 @@ const (
 	Unknown Case = "^.*$" // Unknown 未知
 )
 
-var cases = []Case{
-	LowerCase,
-	UpperCase,
-	SnakeCase,
-	ScreamingSnakeCase,
-	CamelCase,
-	CamelSnakeCase,
-	PascalCase,
-	PascalSnakeCase,
-	KebabCase,
-	CobolCase,
-	TrainCase,
-}
+var (
+	allCases = []Case{
+		LowerCase,
+		UpperCase,
+		SnakeCase,
+		ScreamingSnakeCase,
+		CamelCase,
+		CamelSnakeCase,
+		PascalCase,
+		PascalSnakeCase,
+		KebabCase,
+		CobolCase,
+		TrainCase,
+	}
+	mustContainLowercaseLetterCases = []Case{
+		PascalCase,
+		PascalSnakeCase,
+		TrainCase,
+	}
+)
 
 // CaseOf 获取字符串的命名风格
 func CaseOf(s string) Case {
-	for _, c := range cases {
+	for _, c := range allCases {
 		matched, _ := regexp.Match(string(c), []byte(s))
 		if matched {
-			return c
+			flag := true
+			for _, mustContainLowercaseLetterCase := range mustContainLowercaseLetterCases {
+				if c == mustContainLowercaseLetterCase {
+					flag = false
+					matched, _ := regexp.Match(string(c), []byte(s))
+					if matched {
+						flag = true
+					}
+					break
+				}
+			}
+			if flag {
+				return c
+			}
 		}
 	}
 	return Unknown
