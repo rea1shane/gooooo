@@ -1,6 +1,8 @@
 package log
 
 import (
+	"errors"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"testing"
 )
@@ -29,4 +31,10 @@ func TestGetLogger(t *testing.T) {
 		WithField("key1", "value1").
 		WithField("key2", "value2").
 		Error("error")
+}
+
+func TestFatal(t *testing.T) {
+	logger := NewLogger()
+	logger.Fatal(errors.New("ERROR"))
+	fmt.Println("end")
 }
