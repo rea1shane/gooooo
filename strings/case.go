@@ -17,10 +17,30 @@ const (
 	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                      // CobolCase 科博尔式（大烤串式） e.g. "XX-YY-ZZ"
 	TrainCase          Case = "(?=.*[a-z])^[A-Z][a-z0-9]*(?:-[A-Z][a-z0-9]*)+$" // TrainCase 列车式 e.g. "Xx-Yy-Zz"
 
-	FlatCase       = LowerCase
-	UpperFlatCase  = UpperCase
+	FlatCase = LowerCase
+
+	UpperFlatCase = UpperCase
+
+	SnailCase   = SnakeCase
+	PotholeCase = SnakeCase
+
+	MacroCase    = ScreamingSnakeCase
+	ConstantCase = ScreamingSnakeCase
+
 	LowerCamelCase = CamelCase
+	DromedaryCase  = CamelCase
+
 	UpperCamelCase = PascalCase
+	StudlyCase     = PascalCase
+
+	TitleCase = PascalSnakeCase
+
+	DashCase   = KebabCase
+	LispCase   = KebabCase
+	SpinalCase = KebabCase
+
+	ScreamingKebabCase = CobolCase
+
 	HttpHeaderCase = TrainCase
 )
 
