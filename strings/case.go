@@ -10,27 +10,27 @@ type Case string
 func (c Case) String() string {
 	switch c {
 	case LowerCase:
-		return "LowerCase | FlatCase"
+		return "lowercase | flatcase"
 	case UpperCase:
-		return "UpperCase | UpperFlatCase"
+		return "UPPERCASE | UPPERFLATCASE"
 	case SnakeCase:
-		return "SnakeCase | SnailCase | PotholeCase"
+		return "snake_case | snail_case | pothole_case"
 	case ScreamingSnakeCase:
-		return "ScreamingSnakeCase | MacroCase | ConstantCase"
+		return "SCREAMING_SNAKE_CASE | MACRO_CASE | CONSTANT_CASE"
 	case CamelCase:
-		return "CamelCase | LowerCamelCase | DromedaryCase"
+		return "camelCase | lowerCamelCase | dromedaryCase"
 	case CamelSnakeCase:
-		return "CamelSnakeCase"
+		return "camel_Snake_Case"
 	case PascalCase:
 		return "PascalCase | UpperCamelCase | StudlyCase"
 	case PascalSnakeCase:
-		return "PascalSnakeCase | TitleCase"
+		return "Pascal_Snake_Case | Title_Case"
 	case KebabCase:
-		return "KebabCase | DashCase | LispCase | SpinalCase"
+		return "kebab-case | dash-case | lisp-case | spinal-case"
 	case CobolCase:
-		return "CobolCase | ScreamingKebabCase"
+		return "COBOL-CASE | SCREAMING-KEBAB-CASE"
 	case TrainCase:
-		return "TrainCase | HttpHeaderCase"
+		return "Train-Case | HTTP-Header-Case"
 	}
 	return "unknown"
 }
