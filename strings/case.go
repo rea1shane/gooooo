@@ -35,6 +35,7 @@ func (c Case) String() string {
 	return "unknown case"
 }
 
+// 在 CamelCase 和 PascalCase 中，如果遇到缩写则视为一个单词，首字母视情况大小写，其余字母全小写。见：https://en.wikipedia.org/wiki/Camel_case#Programming_and_coding
 const (
 	LowerCase          Case = "^[a-z0-9]+$"                                // LowerCase 全小写式 e.g. "twowords"
 	UpperCase          Case = "^[A-Z0-9]+$"                                // UpperCase 全大写式 e.g. "TWOWORDS"
