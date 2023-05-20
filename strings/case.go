@@ -35,9 +35,6 @@ func (c Case) String() string {
 	return "unknown"
 }
 
-// mustContainLowercaseLetterPattern 因为 Go 的正则不支持 "?=" 语法，所以才出此下策，否则可以直接在正则表达式前面加 "(?=.*[a-z])" 来判断
-const mustContainLowercaseLetterPattern = "^.*[a-z].*$"
-
 const (
 	LowerCase          Case = "^[a-z0-9]+$"                                // LowerCase 全小写式 e.g. "twowords"
 	UpperCase          Case = "^[A-Z0-9]+$"                                // UpperCase 全大写式 e.g. "TWOWORDS"
@@ -80,46 +77,34 @@ const (
 	Unknown Case = "^.*$" // Unknown 未知
 )
 
-var (
-	allCases = []Case{
-		LowerCase,
-		UpperCase,
-		SnakeCase,
-		ScreamingSnakeCase,
-		CamelCase,
-		CamelSnakeCase,
-		PascalCase,
-		PascalSnakeCase,
-		KebabCase,
-		CobolCase,
-		TrainCase,
-	}
-	mustContainLowercaseLetterCases = []Case{
-		PascalCase,
-		PascalSnakeCase,
-		TrainCase,
-	}
-)
+var allCases = []Case{
+	LowerCase,
+	UpperCase,
+	SnakeCase,
+	ScreamingSnakeCase,
+	CamelCase,
+	CamelSnakeCase,
+	PascalCase,
+	PascalSnakeCase,
+	KebabCase,
+	CobolCase,
+	TrainCase,
+}
 
 // CaseOf 获取字符串的命名风格
 func CaseOf(s string) Case {
 	for _, c := range allCases {
-		matched, _ := regexp.Match(string(c), []byte(s))
-		if matched {
-			flag := true
-			for _, mustContainLowercaseLetterCase := range mustContainLowercaseLetterCases {
-				if c == mustContainLowercaseLetterCase {
-					flag = false
-					matched, _ := regexp.Match(string(c), []byte(s))
-					if matched {
-						flag = true
-					}
-					break
-				}
+		// 检查是否包含小写字母
+		// 因为 Go 的正则 RE2 不支持 PERL 的 look-ahead assertion "?=" 语法，所以才出此下策检测是否存在小写字母，否则可以直接在正则表达式前面加 "(?=.*[a-z])" 来判断
+		// PERL assertion 删除于 commit 8a4620430f018e1b626c8ab8c755c5cac2b23b01
+		if c == PascalCase || c == PascalSnakeCase || c == TrainCase {
+			if contained, _ := regexp.Match("[a-z]", []byte(s)); !contained {
+				continue
 			}
-			if flag {
-				return c
-			}
+		}
+
+		if matched, _ := regexp.Match(string(c), []byte(s)); matched {
+			return c
 		}
 	}
 	return Unknown
