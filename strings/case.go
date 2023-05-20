@@ -1,6 +1,7 @@
 package strings
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -133,10 +134,60 @@ func Break(s string) (words []string) {
 	case KebabCase, CobolCase, TrainCase:
 		words = strings.Split(s, "-")
 	}
-	return words
+	return
 }
 
 // ConvertCase 转换命名风格。
-func ConvertCase(s string, c Case) (string, error) {
-	return "", nil
+func ConvertCase(s string, c Case) (result string, err error) {
+	words := Break(s)
+	switch c {
+	case LowerCase:
+		result = strings.ToLower(strings.Join(words, ""))
+	case UpperCase:
+		result = strings.ToUpper(strings.Join(words, ""))
+	case SnakeCase:
+		result = strings.ToLower(strings.Join(words, "_"))
+	case ScreamingSnakeCase:
+		result = strings.ToUpper(strings.Join(words, "_"))
+	case CamelCase:
+		camelWords(words, true, true)
+		result = strings.Join(words, "")
+	case CamelSnakeCase:
+		camelWords(words, true, false)
+		result = strings.Join(words, "_")
+	case PascalCase:
+		camelWords(words, false, true)
+		result = strings.Join(words, "")
+	case PascalSnakeCase:
+		camelWords(words, false, false)
+		result = strings.Join(words, "_")
+	case KebabCase:
+		result = strings.ToLower(strings.Join(words, "-"))
+	case CobolCase:
+		result = strings.ToUpper(strings.Join(words, "-"))
+	case TrainCase:
+		camelWords(words, false, false)
+		result = strings.Join(words, "-")
+	default:
+		err = fmt.Errorf(Unknown.String())
+	}
+	return
+}
+
+// camelWords 驼峰化数组。
+func camelWords(words []string, lowerFirstWord bool, treatAbbreviationsAsWords bool) {
+	for i := 0; i < len(words); i++ {
+		if len(words[i]) == 0 {
+			continue
+		}
+		if i == 0 && lowerFirstWord {
+			words[i] = strings.ToLower(words[i])
+			continue
+		}
+		otherLetters := words[i][1:]
+		if treatAbbreviationsAsWords {
+			otherLetters = strings.ToLower(otherLetters)
+		}
+		words[i] = strings.ToUpper(words[i][0:1]) + otherLetters
+	}
 }

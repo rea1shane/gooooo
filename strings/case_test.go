@@ -75,3 +75,18 @@ func TestBreak(t *testing.T) {
 		fmt.Println()
 	}
 }
+
+func TestConvertCase(t *testing.T) {
+	s := "HTML_CSS_JS"
+	for _, c := range allCases {
+		fmt.Println(c)
+		fmt.Println(ConvertCase(s, c))
+		fmt.Println()
+	}
+}
+
+func TestCamelWords(t *testing.T) {
+	words := []string{"", "", ""}
+	camelWords(words, true, false)
+	fmt.Println(words)
+}
