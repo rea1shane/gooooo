@@ -32,7 +32,7 @@ func (c Case) String() string {
 	case TrainCase:
 		return "Train-Case | HTTP-Header-Case"
 	}
-	return "unknown"
+	return "unknown case"
 }
 
 const (
@@ -91,7 +91,7 @@ var allCases = []Case{
 	TrainCase,
 }
 
-// CaseOf 获取字符串的命名风格
+// CaseOf 获取字符串的命名风格。
 func CaseOf(s string) Case {
 	for _, c := range allCases {
 		// 检查是否包含小写字母
@@ -110,51 +110,32 @@ func CaseOf(s string) Case {
 	return Unknown
 }
 
-// Pascal2Snake 帕斯卡（大驼峰式）转蛇形
-// 样例：XxYy => xx_yy | XxYY => xx_y_y
-func Pascal2Snake(s string) string {
-	data := make([]byte, 0, len(s)*2)
-	j := false
-	num := len(s)
-	for i := 0; i < num; i++ {
-		d := s[i]
-		// or通过ASCII码进行大小写的转化
-		// 65-90（A-Z），97-122（a-z）
-		//判断如果字母为大写的A-Z就在前面拼接一个_
-		if i > 0 && d >= 'A' && d <= 'Z' && j {
-			data = append(data, '_')
+// Break 将字符串分解成单词列表。
+// 数字不会单独分解出来。
+// 如果命名风格为 LowerCase UpperCase Unknown 其中一个，不会进行分解。
+func Break(s string) (words []string) {
+	switch CaseOf(s) {
+	case LowerCase, UpperCase, Unknown:
+		words = append(words, s)
+	case CamelCase, PascalCase:
+		cursor := 0
+		for i := 1; i < len(s); i++ {
+			letter := s[i]
+			if letter >= 'A' && letter <= 'Z' {
+				words = append(words, s[cursor:i])
+				cursor = i
+			}
 		}
-		if d != '_' {
-			j = true
-		}
-		data = append(data, d)
+		words = append(words, s[cursor:])
+	case SnakeCase, ScreamingSnakeCase, CamelSnakeCase, PascalSnakeCase:
+		words = strings.Split(s, "_")
+	case KebabCase, CobolCase, TrainCase:
+		words = strings.Split(s, "-")
 	}
-	//ToLower把大写字母统一转小写
-	return strings.ToLower(string(data[:]))
+	return words
 }
 
-// Snake2Pascal 蛇形转帕斯卡（大驼峰式）
-// 样例：xx_yy => XxYx | xx_y_y => XxYY
-func Snake2Pascal(s string) string {
-	data := make([]byte, 0, len(s))
-	j := false
-	k := false
-	num := len(s) - 1
-	for i := 0; i <= num; i++ {
-		d := s[i]
-		if k == false && d >= 'A' && d <= 'Z' {
-			k = true
-		}
-		if d >= 'a' && d <= 'z' && (j || k == false) {
-			d = d - 32
-			j = false
-			k = true
-		}
-		if k && d == '_' && num > i && s[i+1] >= 'a' && s[i+1] <= 'z' {
-			j = true
-			continue
-		}
-		data = append(data, d)
-	}
-	return string(data[:])
+// ConvertCase 转换命名风格。
+func ConvertCase(s string, c Case) (string, error) {
+	return "", nil
 }

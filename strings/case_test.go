@@ -67,3 +67,11 @@ func TestCaseOf(t *testing.T) {
 	fmt.Println(Unknown)
 	fmt.Println(result[Unknown])
 }
+
+func TestBreak(t *testing.T) {
+	for _, sample := range samples {
+		fmt.Println(sample)
+		fmt.Println(Break(sample))
+		fmt.Println()
+	}
+}
