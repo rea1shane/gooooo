@@ -6,10 +6,21 @@ import (
 	"testing"
 )
 
+var (
+	strings = []string{"A", "B", "C"}
+	ints    = []int{1, 2, 3}
+)
+
 func TestContains(t *testing.T) {
-	ss := []string{"A", "B", "C"}
-	fmt.Println(slices.Contains(ss, "A"))
-	is := []int{1, 2, 3}
-	fmt.Println(slices.Contains(is, 1))
-	fmt.Println(slices.Contains(is, 4))
+	fmt.Println(slices.Contains(strings, "A"))
+	fmt.Println(slices.Contains(ints, 1))
+	fmt.Println(slices.Contains(ints, 4))
+}
+
+func TestConvertToMap(t *testing.T) {
+	m := Map(strings)
+	_, ok := m["A"]
+	fmt.Println(ok)
+	_, ok = m["D"]
+	fmt.Println(ok)
 }
