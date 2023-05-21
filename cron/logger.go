@@ -3,6 +3,7 @@ package cron
 import (
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/exp/slices"
 	"time"
 )
 
@@ -44,7 +45,8 @@ func (l *Logger) generateLoggerFields(kvs ...any) logrus.Fields {
 	for i := 0; i < len(kvs); i += 2 {
 		key := kvs[i].(string)
 		value := kvs[i+1]
-		if l.hide(key) {
+		// 检测元素是否在 hiddenFields 中
+		if slices.Contains(l.hiddenFields, key) {
 			continue
 		}
 		switch key {
@@ -61,14 +63,4 @@ func (l *Logger) generateLoggerFields(kvs ...any) logrus.Fields {
 		}
 	}
 	return fields
-}
-
-// hide 检测元素是否在 hiddenFields 中
-func (l *Logger) hide(key string) bool {
-	for _, hiddenField := range l.hiddenFields {
-		if key == hiddenField {
-			return true
-		}
-	}
-	return false
 }
