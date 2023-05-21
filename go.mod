@@ -12,6 +12,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.9.0
 	github.com/xuri/excelize/v2 v2.7.1
+	golang.org/x/exp v0.0.0-20230519143937-03e91628a987
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 )
