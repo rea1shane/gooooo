@@ -6,7 +6,78 @@ import (
 	"strings"
 )
 
-type Case string
+type Case int
+
+// 在 CamelCase 和 PascalCase 中，如果遇到缩写则视为一个单词，首字母视情况大小写，其余字母全小写。见：https://en.wikipedia.org/wiki/Camel_case#Programming_and_coding
+const (
+	Unknown            Case = iota // Unknown 未知
+	LowerCase                      // LowerCase 全小写式 e.g. "twowords"
+	UpperCase                      // UpperCase 全大写式 e.g. "TWOWORDS"
+	SnakeCase                      // SnakeCase 蛇形（小蛇式） e.g. "two_words"
+	ScreamingSnakeCase             // ScreamingSnakeCase 大蛇式 e.g. "TWO_WORDS"
+	CamelCase                      // CamelCase 驼峰式（小驼峰式） e.g. "twoWords"
+	CamelSnakeCase                 // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "two_Words"
+	PascalCase                     // PascalCase 帕斯卡式（大驼峰式） e.g. "TwoWords"
+	PascalSnakeCase                // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Two_Words"
+	KebabCase                      // KebabCase 烤串式（小烤串式） e.g. "two-words"
+	CobolCase                      // CobolCase 科博尔式（大烤串式） e.g. "TWO-WORDS"
+	TrainCase                      // TrainCase 列车式 e.g. "Two-Words"
+
+	FlatCase = LowerCase
+
+	UpperFlatCase = UpperCase
+
+	SnailCase   = SnakeCase
+	PotholeCase = SnakeCase
+
+	MacroCase    = ScreamingSnakeCase
+	ConstantCase = ScreamingSnakeCase
+
+	LowerCamelCase = CamelCase
+	DromedaryCase  = CamelCase
+
+	UpperCamelCase = PascalCase
+	StudlyCase     = PascalCase
+
+	TitleCase = PascalSnakeCase
+
+	DashCase   = KebabCase
+	LispCase   = KebabCase
+	SpinalCase = KebabCase
+
+	ScreamingKebabCase = CobolCase
+
+	HttpHeaderCase = TrainCase
+)
+
+// pattern 返回对应的正则匹配表达式
+func (c Case) pattern() string {
+	switch c {
+	case LowerCase:
+		return "^[a-z0-9]+$"
+	case UpperCase:
+		return "^[A-Z0-9]+$"
+	case SnakeCase:
+		return "^[a-z0-9]+(?:_[a-z0-9]+)+$"
+	case ScreamingSnakeCase:
+		return "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"
+	case CamelCase:
+		return "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"
+	case CamelSnakeCase:
+		return "^[a-z][A-Za-z0-9]*(?:_[A-Z][A-Za-z0-9]*)+$"
+	case PascalCase:
+		return "^(?:[A-Z][a-z0-9]*)+$"
+	case PascalSnakeCase:
+		return "^[A-Z][A-Za-z0-9]*(?:_[A-Z][A-Za-z0-9]*)+$"
+	case KebabCase:
+		return "^[a-z0-9]+(?:-[a-z0-9]+)+$"
+	case CobolCase:
+		return "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+	case TrainCase:
+		return "^[A-Z][A-Za-z0-9]*(?:-[A-Z][A-Za-z0-9]*)+$"
+	}
+	return "^.*$"
+}
 
 func (c Case) String() string {
 	switch c {
@@ -36,49 +107,6 @@ func (c Case) String() string {
 	return "unknown case"
 }
 
-// 在 CamelCase 和 PascalCase 中，如果遇到缩写则视为一个单词，首字母视情况大小写，其余字母全小写。见：https://en.wikipedia.org/wiki/Camel_case#Programming_and_coding
-const (
-	LowerCase          Case = "^[a-z0-9]+$"                                // LowerCase 全小写式 e.g. "twowords"
-	UpperCase          Case = "^[A-Z0-9]+$"                                // UpperCase 全大写式 e.g. "TWOWORDS"
-	SnakeCase          Case = "^[a-z0-9]+(?:_[a-z0-9]+)+$"                 // SnakeCase 蛇形（小蛇式） e.g. "two_words"
-	ScreamingSnakeCase Case = "^[A-Z0-9]+(?:_[A-Z0-9]+)+$"                 // ScreamingSnakeCase 大蛇式 e.g. "TWO_WORDS"
-	CamelCase          Case = "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)+$"        // CamelCase 驼峰式（小驼峰式） e.g. "twoWords"
-	CamelSnakeCase     Case = "^[a-z][A-Za-z0-9]*(?:_[A-Z][A-Za-z0-9]*)+$" // CamelSnakeCase 驼峰式蛇形（小驼峰式蛇形） e.g. "two_Words"
-	PascalCase         Case = "^(?:[A-Z][a-z0-9]*)+$"                      // PascalCase 帕斯卡式（大驼峰式） e.g. "TwoWords"
-	PascalSnakeCase    Case = "^[A-Z][A-Za-z0-9]*(?:_[A-Z][A-Za-z0-9]*)+$" // PascalSnakeCase 帕斯卡蛇形（大驼峰式蛇形） e.g. "Two_Words"
-	KebabCase          Case = "^[a-z0-9]+(?:-[a-z0-9]+)+$"                 // KebabCase 烤串式（小烤串式） e.g. "two-words"
-	CobolCase          Case = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"                 // CobolCase 科博尔式（大烤串式） e.g. "TWO-WORDS"
-	TrainCase          Case = "^[A-Z][A-Za-z0-9]*(?:-[A-Z][A-Za-z0-9]*)+$" // TrainCase 列车式 e.g. "Two-Words"
-
-	FlatCase = LowerCase
-
-	UpperFlatCase = UpperCase
-
-	SnailCase   = SnakeCase
-	PotholeCase = SnakeCase
-
-	MacroCase    = ScreamingSnakeCase
-	ConstantCase = ScreamingSnakeCase
-
-	LowerCamelCase = CamelCase
-	DromedaryCase  = CamelCase
-
-	UpperCamelCase = PascalCase
-	StudlyCase     = PascalCase
-
-	TitleCase = PascalSnakeCase
-
-	DashCase   = KebabCase
-	LispCase   = KebabCase
-	SpinalCase = KebabCase
-
-	ScreamingKebabCase = CobolCase
-
-	HttpHeaderCase = TrainCase
-
-	Unknown Case = "^.*$" // Unknown 未知
-)
-
 var allCases = []Case{
 	LowerCase,
 	UpperCase,
@@ -105,7 +133,7 @@ func CaseOf(s string) Case {
 			}
 		}
 
-		if matched, _ := regexp.Match(string(c), []byte(s)); matched {
+		if matched, _ := regexp.Match(c.pattern(), []byte(s)); matched {
 			return c
 		}
 	}

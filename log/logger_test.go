@@ -12,7 +12,7 @@ func TestGetLogger(t *testing.T) {
 
 	logger.SetLevel(logrus.TraceLevel)
 
-	logger.Trace("trace")
+	logger.Trace("trace", "A", "B")
 	logger.Debug("debug")
 
 	fields := make(logrus.Fields)
@@ -20,7 +20,7 @@ func TestGetLogger(t *testing.T) {
 	fields["k2"] = "v2"
 	loggerWithFields := logger.WithFields(fields)
 
-	loggerWithFields.Info("info")
+	loggerWithFields.Info("info", "A", "B")
 	loggerWithFields.Warn("warn")
 
 	formatter := GetFormatter()
