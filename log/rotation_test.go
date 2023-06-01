@@ -1,6 +1,7 @@
 package log
 
 import (
+	"github.com/rea1shane/gooooo/data"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"testing"
 )
@@ -14,8 +15,8 @@ func TestRotate(t *testing.T) {
 	logger.Info("test")
 }
 
-func TestLoadRotationConfigFromYaml(t *testing.T) {
-	output, err := LoadRotationConfigFromYaml("rotation.yaml")
+func TestNewRotationConfigFromFile(t *testing.T) {
+	output, err := NewRotationConfigFromFile("rotation.yaml", data.YamlFormat)
 	if err != nil {
 		panic(err)
 	}

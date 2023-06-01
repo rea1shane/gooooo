@@ -1,7 +1,9 @@
 package log
 
 import (
-	"github.com/rea1shane/gooooo/yaml"
+	"errors"
+	"github.com/rea1shane/gooooo/data"
+	"github.com/rea1shane/gooooo/os"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -11,9 +13,12 @@ func Rotate(logger *logrus.Logger, output *lumberjack.Logger) {
 	logger.SetOutput(output)
 }
 
-// LoadRotationConfigFromYaml 从 yaml 文件中获取日志滚动相关配置
-func LoadRotationConfigFromYaml(path string) (output *lumberjack.Logger, err error) {
-	err = yaml.Load(path, &output)
+// NewRotationConfigFromFile 从文件中新建日志滚动配置
+func NewRotationConfigFromFile(path string, format data.Format) (output *lumberjack.Logger, err error) {
+	if format != data.JsonFormat && format != data.YamlFormat {
+		return nil, errors.New("only support json or yaml format")
+	}
+	err = os.Load(path, &output, format)
 	return
 }
 
