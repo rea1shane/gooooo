@@ -11,7 +11,7 @@ import (
 
 func TestNewHandler(t *testing.T) {
 	logger := logrus.New()
-	formatter := myLog.GetFormatter()
+	formatter := myLog.NewFormatter()
 	formatter.FieldsOrder = []string{"StatusCode", "Latency"}
 	logger.SetFormatter(formatter)
 	handler := NewHandler(logger, 10*time.Microsecond, "/skip")

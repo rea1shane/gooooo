@@ -8,12 +8,12 @@ import (
 // NewLogger 新建一个 logrus.Logger，使用基础款 Formatter
 func NewLogger() *logrus.Logger {
 	logger := logrus.New()
-	logger.SetFormatter(GetFormatter())
+	logger.SetFormatter(NewFormatter())
 	return logger
 }
 
-// GetFormatter 返回基础款 logrus.Formatter
-func GetFormatter() *formatter.Formatter {
+// NewFormatter 新建一个带有自定义配置的 logrus.Formatter
+func NewFormatter() *formatter.Formatter {
 	return &formatter.Formatter{
 		TimestampFormat: "2006-01-02 | 15:04:05",
 		HideKeys:        true,

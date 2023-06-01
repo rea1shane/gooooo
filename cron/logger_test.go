@@ -9,7 +9,7 @@ import (
 )
 
 func TestLogger(t *testing.T) {
-	formatter := log.GetFormatter()
+	formatter := log.NewFormatter()
 	formatter.FieldsOrder = []string{"module"}
 	logger := log.NewLogger()
 	logger.SetFormatter(formatter)

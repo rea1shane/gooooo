@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestGetLogger(t *testing.T) {
+func TestNewLogger(t *testing.T) {
 	logger := NewLogger()
 
 	logger.SetLevel(logrus.TraceLevel)
@@ -23,7 +23,7 @@ func TestGetLogger(t *testing.T) {
 	loggerWithFields.Info("info", "A", "B")
 	loggerWithFields.Warn("warn")
 
-	formatter := GetFormatter()
+	formatter := NewFormatter()
 	formatter.HideKeys = false
 	logger.SetFormatter(formatter)
 
