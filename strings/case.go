@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"fmt"
+	"errors"
 	"regexp"
 	"strings"
 )
@@ -197,7 +197,7 @@ func ConvertCase(s string, c Case) (result string, err error) {
 		camelWords(words, false, false)
 		result = strings.Join(words, "-")
 	default:
-		err = fmt.Errorf(Unknown.String())
+		err = errors.New(Unknown.String())
 	}
 	return
 }
