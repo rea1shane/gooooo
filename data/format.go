@@ -15,6 +15,19 @@ const (
 	XmlFormat
 )
 
+func (f Format) String() string {
+	switch f {
+	case JsonFormat:
+		return "json format"
+	case YamlFormat:
+		return "yaml format"
+	case XmlFormat:
+		return "xml format"
+	default:
+		return "unknown format"
+	}
+}
+
 // UnmarshalString 将字符串解析到指定结构体中，需要指定 Format。
 // 注意，这里需要传入的是 model 的地址。
 func UnmarshalString(s string, model any, format Format) error {
@@ -23,13 +36,14 @@ func UnmarshalString(s string, model any, format Format) error {
 
 // UnmarshalBytes 将 byte 数组解析到指定结构体中，需要指定 Format。
 // 注意，这里需要传入的是 model 的地址。
-func UnmarshalBytes(data []byte, model any, format Format) error {
+func UnmarshalBytes(data []byte, model any, format Format) (err error) {
 	switch format {
 	case JsonFormat:
-		return json.Unmarshal(data, model)
+		err = json.Unmarshal(data, model)
 	case YamlFormat:
-		return yaml.Unmarshal(data, model)
+		err = yaml.Unmarshal(data, model)
 	default:
-		return errors.New("unsupported format")
+		err = errors.New("unsupported format")
 	}
+	return errors.Wrap(err, format.String())
 }
