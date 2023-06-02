@@ -34,13 +34,13 @@ c: 6`)
 	handler.Run("0.0.0.0:7777")
 }
 
-func TestDo(t *testing.T) {
+func TestLoad(t *testing.T) {
 	var jsonData JsonData
 	r1, err := http.NewRequest(http.MethodGet, "http://localhost:7777/json", nil)
 	if err != nil {
 		panic(err)
 	}
-	err = DoAndUnmarshal(http.DefaultClient, r1, &jsonData, data.JsonFormat)
+	err = Load(http.DefaultClient, r1, &jsonData, data.JsonFormat)
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +51,7 @@ func TestDo(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	err = DoAndUnmarshal(http.DefaultClient, r2, &yamlData, data.YamlFormat)
+	err = Load(http.DefaultClient, r2, &yamlData, data.YamlFormat)
 	if err != nil {
 		panic(err)
 	}
