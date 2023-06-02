@@ -1,7 +1,7 @@
 package log
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"github.com/rea1shane/gooooo/data"
 	"github.com/rea1shane/gooooo/os"
 	"github.com/sirupsen/logrus"

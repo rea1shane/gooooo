@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"regexp"
 	"strings"
 )

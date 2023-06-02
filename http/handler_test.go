@@ -1,8 +1,8 @@
 package http
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	myLog "github.com/rea1shane/gooooo/log"
 	"github.com/sirupsen/logrus"
 	"testing"

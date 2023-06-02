@@ -1,8 +1,8 @@
 package log
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"testing"
 )

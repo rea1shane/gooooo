@@ -40,7 +40,7 @@ func TestDo(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	err = Do(http.DefaultClient, r1, &jsonData, data.JsonFormat)
+	err = DoAndUnmarshal(http.DefaultClient, r1, &jsonData, data.JsonFormat)
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +51,7 @@ func TestDo(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	err = Do(http.DefaultClient, r2, &yamlData, data.YamlFormat)
+	err = DoAndUnmarshal(http.DefaultClient, r2, &yamlData, data.YamlFormat)
 	if err != nil {
 		panic(err)
 	}
