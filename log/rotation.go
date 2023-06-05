@@ -16,7 +16,7 @@ func Rotate(logger *logrus.Logger, output *lumberjack.Logger) {
 // NewRotationConfigFromFile 从文件中新建日志滚动配置
 func NewRotationConfigFromFile(path string, format data.Format) (output *lumberjack.Logger, err error) {
 	if format != data.JsonFormat && format != data.YamlFormat {
-		return nil, errors.New("unsupported format, only support json or yaml format")
+		return nil, errors.New("unsupported format, only JSON or YAML formats are supported")
 	}
 	err = os.Load(path, &output, format)
 	return
