@@ -8,12 +8,15 @@ import (
 )
 
 func TestWrapError(t *testing.T) {
-	fmt.Printf("%+v\n", a())
+	fmt.Printf("%+v\n", request())
 }
 
 func request() error {
 	_, err := http.Get("http://localhost:8888")
-	return failure.Wrap(err)
+	return failure.Wrap(err, failure.Context{
+		"action": "request",
+		"step":   "1",
+	})
 }
 
 const (
