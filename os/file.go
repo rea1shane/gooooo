@@ -1,7 +1,7 @@
 package os
 
 import (
-	"github.com/pkg/errors"
+	"github.com/morikuni/failure"
 	"github.com/rea1shane/gooooo/data"
 	"os"
 )
@@ -11,7 +11,7 @@ import (
 func Load(path string, model any, format data.Format) error {
 	file, err := os.ReadFile(path)
 	if err != nil {
-		return errors.Wrap(err, "read file")
+		return failure.Wrap(err, failure.Message("read file"))
 	}
-	return errors.Wrap(data.UnmarshalBytes(file, model, format), "unmarshal")
+	return failure.Wrap(data.UnmarshalBytes(file, model, format), failure.Message("unmarshal"))
 }

@@ -1,7 +1,7 @@
 package http
 
 import (
-	"github.com/pkg/errors"
+	"github.com/morikuni/failure"
 	"github.com/rea1shane/gooooo/data"
 	"io"
 	"net/http"
@@ -12,16 +12,16 @@ func Load(client *http.Client, request *http.Request, model any, format data.For
 	// 请求
 	response, err := client.Do(request)
 	if err != nil {
-		return errors.Wrap(err, "request")
+		return failure.Wrap(err, failure.Message("request"))
 	}
 	defer response.Body.Close()
 
 	// 读取
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return errors.Wrap(err, "read response body")
+		return failure.Wrap(err, failure.Message("read response body"))
 	}
 
 	// 解析
-	return errors.Wrap(data.UnmarshalBytes(responseBody, model, format), "unmarshal")
+	return failure.Wrap(data.UnmarshalBytes(responseBody, model, format), failure.Message("unmarshal"))
 }

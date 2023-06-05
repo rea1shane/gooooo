@@ -2,6 +2,7 @@ package data
 
 import (
 	"github.com/goccy/go-json"
+	"github.com/morikuni/failure"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
 )
@@ -18,13 +19,13 @@ const (
 func (f Format) String() string {
 	switch f {
 	case JsonFormat:
-		return "json format"
+		return "JSON"
 	case YamlFormat:
-		return "yaml format"
+		return "YAML"
 	case XmlFormat:
-		return "xml format"
+		return "XML"
 	default:
-		return "unknown format"
+		return "unknown"
 	}
 }
 
@@ -45,5 +46,7 @@ func UnmarshalBytes(data []byte, model any, format Format) (err error) {
 	default:
 		err = errors.New("unsupported format")
 	}
-	return errors.Wrap(err, format.String())
+	return failure.Wrap(err, failure.Context{
+		"format": format.String(),
+	})
 }
