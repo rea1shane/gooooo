@@ -4,7 +4,7 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/morikuni/failure"
 	"github.com/pkg/errors"
-	"sigs.k8s.io/yaml"
+	"gopkg.in/yaml.v3"
 )
 
 type Format int
