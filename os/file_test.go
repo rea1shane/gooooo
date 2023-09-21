@@ -20,8 +20,10 @@ func TestLoadJson(t *testing.T) {
 	fmt.Printf("%+v\n", jsonData)
 }
 
+type custom string
+
 type YamlData struct {
-	A string `yaml:"a"`
+	A custom `yaml:"a"`
 	B string `yaml:"b"`
 	C string `yaml:"c"`
 }

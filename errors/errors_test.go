@@ -13,6 +13,7 @@ func TestWrapError(t *testing.T) {
 
 func request() error {
 	_, err := http.Get("http://localhost:8888")
+	// err := a()
 	return failure.Wrap(err, failure.Context{
 		"action": "request",
 		"step":   "1",
