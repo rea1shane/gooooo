@@ -2,9 +2,10 @@ package cron
 
 import (
 	"fmt"
-	"github.com/robfig/cron/v3"
 	"testing"
 	"time"
+
+	"github.com/robfig/cron/v3"
 )
 
 func TestCron(t *testing.T) {
@@ -17,7 +18,11 @@ func TestCron(t *testing.T) {
 
 func TestCronWithSeconds(t *testing.T) {
 	c := cron.New(cron.WithSeconds())
-	c.AddFunc("* * * * * *", func() { fmt.Println("Print per second") })
+	id, err := c.AddFunc("* * * * * *", func() { fmt.Println("Print per second") })
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(id)
 	c.Start()
 	time.Sleep(100 * time.Second)
 	c.Stop()

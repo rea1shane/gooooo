@@ -1,9 +1,11 @@
 package os
 
 import (
-	"github.com/morikuni/failure"
-	"github.com/rea1shane/gooooo/data"
 	"os"
+
+	"github.com/morikuni/failure"
+
+	"github.com/rea1shane/gooooo/data"
 )
 
 // Load 读取文件并将数据加载到 model 中。

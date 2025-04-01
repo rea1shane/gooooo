@@ -1,10 +1,12 @@
 package http
 
 import (
-	"github.com/morikuni/failure"
-	"github.com/rea1shane/gooooo/data"
 	"io"
 	"net/http"
+
+	"github.com/morikuni/failure"
+
+	"github.com/rea1shane/gooooo/data"
 )
 
 // Load 执行请求并且解析返回体数据加载到 model 中。

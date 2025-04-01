@@ -2,10 +2,12 @@ package cron
 
 import (
 	"fmt"
-	"github.com/rea1shane/gooooo/log"
-	"github.com/robfig/cron/v3"
 	"testing"
 	"time"
+
+	"github.com/robfig/cron/v3"
+
+	"github.com/rea1shane/gooooo/log"
 )
 
 func TestLogger(t *testing.T) {
